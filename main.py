@@ -1,6 +1,22 @@
 import os
 import random
 import shutil
+import sys
+
+def is_elevated():
+    #Unix check
+    if hasattr(os, "getuid"):
+        return os.getuid() == 0
+    
+    #Windows Check
+    try:
+        import ctypes
+        return ctypes.windll.shell32.IsUserAnAdmin()
+    except Exception:
+        return False
+    
+if not is_elevated():
+    sys.exit("Script must be run with root/admin")
 
 choices= ["heads", "tails"]
 
